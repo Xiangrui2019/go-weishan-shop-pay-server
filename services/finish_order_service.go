@@ -73,10 +73,10 @@ func (service *FinishOrderService) buildWeixinContent(data *global.OrderCache, o
 		data.BuyPrice,
 		os.Getenv("CHECK_CALLBACK"),
 		strconv.Itoa(int(order.ID)),
-		os.Getenv("FINISH_CALLBACK"),
-		strconv.Itoa(int(order.ID)),
 		os.Getenv("APP_MAP"),
-		url.QueryEscape(data.Address))
+		url.QueryEscape(data.Address),
+		os.Getenv("FINISH_CALLBACK"),
+		strconv.Itoa(int(order.ID)))
 }
 
 func (service *FinishOrderService) messageHandler(context *gin.Context, msg notify.Message) {
