@@ -1,9 +1,20 @@
 package modules
 
-import "github.com/streadway/amqp"
+import (
+	"log"
+	"os"
+
+	"github.com/streadway/amqp"
+)
 
 var AMQPModule *amqp.Connection
 
 func InitAMQPModule() {
-	AMQPModule = amqp.Dial
+	var err error
+
+	AMQPModule, err = amqp.Dial(os.Getenv("AMQP_ADDR"))
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
