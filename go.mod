@@ -9,6 +9,5 @@ require (
 	github.com/jinzhu/gorm v1.9.10
 	github.com/joho/godotenv v1.3.0
 	github.com/qingwg/payjs v0.0.0-20190712025927-45615e48578f
-	github.com/streadway/amqp v0.0.0-20190815230801-eade30b20f1d
 	gopkg.in/go-playground/validator.v8 v8.18.2
 )
