@@ -1,26 +1,11 @@
 package api
 
 import (
-	"go-weishan-shop-pay-server/serializer"
 	"go-weishan-shop-pay-server/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
-
-func ListOrder(context *gin.Context) {
-	service := services.ListOrderService{}
-
-	if orders, err := service.List(); err == nil {
-		context.JSON(http.StatusOK, &serializer.Response{
-			Code:    http.StatusOK,
-			Message: "成功获取订单列表.",
-			Data:    orders,
-		})
-	} else {
-		context.JSON(http.StatusInternalServerError, err)
-	}
-}
 
 func PublishOrder(context *gin.Context) {
 	service := services.PublishOrderService{}
