@@ -20,7 +20,7 @@ func NewRouter() *gin.Engine {
 		v1.POST("/ping", api.Ping)
 
 		v1.POST("/pay/create", api.CreatePay)
-		v1.POST("/pay/update", api.ConfirmPay)
+		v1.POST("/pay/confirm", api.ConfirmPay)
 	}
 
 	task := router.Group("/tasks/v1")
