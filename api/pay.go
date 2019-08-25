@@ -26,3 +26,16 @@ func CreatePay(context *gin.Context) {
 		}
 	}
 }
+
+func ConfirmPay(context *gin.Context) {
+	service := services.ConfirmPayService{}
+
+	if err := service.Finish(context); err == nil {
+		context.JSON(http.StatusOK, &serializer.Response{
+			Code:    http.StatusOK,
+			Message: "订单确认成功.",
+		})
+	} else {
+		context.JSON(http.StatusInternalServerError, err)
+	}
+}

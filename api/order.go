@@ -22,19 +22,6 @@ func ListOrder(context *gin.Context) {
 	}
 }
 
-func ConfirmOrder(context *gin.Context) {
-	service := services.ConfirmOrderService{}
-
-	if err := service.Finish(context); err == nil {
-		context.JSON(http.StatusOK, &serializer.Response{
-			Code:    http.StatusOK,
-			Message: "订单确认成功.",
-		})
-	} else {
-		context.JSON(http.StatusInternalServerError, err)
-	}
-}
-
 func PublishOrder(context *gin.Context) {
 	service := services.PublishOrderService{}
 
