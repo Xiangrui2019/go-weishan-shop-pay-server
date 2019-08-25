@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-type CreateOrderService struct {
+type CreatePayService struct {
 	Goodname    string  `form:"good_name" json:"good_name" binding:"required"`
 	GoodId      string  `form:"good_id" json:"good_id" binding:"required"`
 	Realname    string  `form:"real_name" json:"real_name" binding:"required,min=2,max=20"`
@@ -23,7 +23,7 @@ type CreateOrderService struct {
 	Price       float64 `form:"price" json:"price" binding:"required"`
 }
 
-func (service *CreateOrderService) buildOrderCache() (string, error) {
+func (service *CreatePayService) buildOrderCache() (string, error) {
 	value, err := json.Marshal(&global.OrderCache{
 		Goodname:    service.Goodname,
 		GoodId:      service.GoodId,
@@ -42,7 +42,7 @@ func (service *CreateOrderService) buildOrderCache() (string, error) {
 	return string(value), err
 }
 
-func (service *CreateOrderService) buildCashier(token string) string {
+func (service *CreatePayService) buildCashier(token string) string {
 	cashier := modules.PayJSModule.GetCashier()
 	url, err := cashier.GetRequestUrl(
 		utils.Yuan2fen(utils.CalcGoodPrice(service.Price, service.BuyCount)),
@@ -61,7 +61,7 @@ func (service *CreateOrderService) buildCashier(token string) string {
 	return url
 }
 
-func (service *CreateOrderService) Create() (string, *serializer.Response) {
+func (service *CreatePayService) Create() (string, *serializer.Response) {
 	token := utils.RandomString(64)
 	value, err := service.buildOrderCache()
 
