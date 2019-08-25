@@ -20,10 +20,10 @@ import (
 	"github.com/qingwg/payjs/notify"
 )
 
-type FinishOrderService struct {
+type ConfirmOrderService struct {
 }
 
-func (service *FinishOrderService) getOrderCache(msg notify.Message) (*global.OrderCache, error) {
+func (service *ConfirmOrderService) getOrderCache(msg notify.Message) (*global.OrderCache, error) {
 	data := global.OrderCache{}
 
 	value, err := cache.CacheClient.Get(msg.Attach).Result()
@@ -39,7 +39,7 @@ func (service *FinishOrderService) getOrderCache(msg notify.Message) (*global.Or
 	return &data, nil
 }
 
-func (service *FinishOrderService) buildOrder(data *global.OrderCache) *models.Order {
+func (service *ConfirmOrderService) buildOrder(data *global.OrderCache) *models.Order {
 	return &models.Order{
 		Goodname:    data.Goodname,
 		GoodId:      data.GoodId,
@@ -53,7 +53,7 @@ func (service *FinishOrderService) buildOrder(data *global.OrderCache) *models.O
 	}
 }
 
-func (service *FinishOrderService) buildFee(data *global.OrderCache, to float64, fee float64) *models.Fee {
+func (service *ConfirmOrderService) buildFee(data *global.OrderCache, to float64, fee float64) *models.Fee {
 	return &models.Fee{
 		TotalValue: data.BuyPrice,
 		ToValue:    to,
@@ -61,7 +61,7 @@ func (service *FinishOrderService) buildFee(data *global.OrderCache, to float64,
 	}
 }
 
-func (service *FinishOrderService) buildWeixinContent(data *global.OrderCache, order *models.Order) string {
+func (service *ConfirmOrderService) buildWeixinContent(data *global.OrderCache, order *models.Order) string {
 	return fmt.Sprintf(templates.WeixinNotifySenderTemplate,
 		data.Goodname,
 		data.GoodId,
@@ -79,7 +79,7 @@ func (service *FinishOrderService) buildWeixinContent(data *global.OrderCache, o
 		strconv.Itoa(int(order.ID)))
 }
 
-func (service *FinishOrderService) messageHandler(context *gin.Context, msg notify.Message) {
+func (service *ConfirmOrderService) messageHandler(context *gin.Context, msg notify.Message) {
 	data, err := service.getOrderCache(msg)
 
 	if err != nil {
@@ -111,7 +111,7 @@ func (service *FinishOrderService) messageHandler(context *gin.Context, msg noti
 	}
 }
 
-func (service *FinishOrderService) Finish(context *gin.Context) *serializer.Response {
+func (service *ConfirmOrderService) Finish(context *gin.Context) *serializer.Response {
 	payNotify := modules.PayJSModule.GetNotify(context.Request, context.Writer)
 
 	payNotify.SetMessageHandler(func(msg notify.Message) {
