@@ -50,8 +50,8 @@ func (service *CreateOrderService) buildCashier(token string) string {
 		utils.RandomString(32),
 		token,
 		os.Getenv("APP_CALLBACK_PAGE"),
-		0,
-		0,
+		1,
+		1,
 	)
 
 	if err != nil {
