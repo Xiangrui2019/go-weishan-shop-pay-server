@@ -27,7 +27,9 @@ func NewRouter() *gin.Engine {
 
 	task := router.Group("/tasks")
 	{
-		task.GET("/compute_report", func(context *gin.Context) { utils.RunTask(context, tasks.ComputeReportTask) })
+		task.GET("/compute_report", func(context *gin.Context) {
+			utils.RunTask(context, tasks.ComputeReportTask)
+		})
 	}
 
 	web := router.Group("/web")
