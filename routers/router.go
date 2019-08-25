@@ -21,7 +21,7 @@ func NewRouter() *gin.Engine {
 
 		order := v1.Group("/order")
 		{
-			order.GET("/", api.ListOrder)
+			order.GET("", api.ListOrder)
 		}
 	}
 
