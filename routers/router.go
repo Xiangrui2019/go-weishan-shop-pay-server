@@ -32,7 +32,7 @@ func NewRouter() *gin.Engine {
 
 	web := router.Group("/web/v1")
 	{
-		web.GET("/order/put/:id", api.PublishOrder)
+		web.GET("/order/publish/:id", api.PublishOrder)
 		web.GET("/order/check/:id", api.CheckPublishOrder)
 	}
 
