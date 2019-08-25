@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateOrder(context *gin.Context) {
+func CreatePay(context *gin.Context) {
 	service := services.CreatePayService{}
 
 	if err := context.ShouldBind(&service); err != nil {
