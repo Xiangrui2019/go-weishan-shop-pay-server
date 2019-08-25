@@ -25,20 +25,20 @@ func NewRouter() *gin.Engine {
 		}
 	}
 
-	task := router.Group("/tasks")
+	task := router.Group("/tasks/v1")
 	{
 		task.GET("/compute_report", func(context *gin.Context) {
 			utils.RunTask(context, tasks.ComputeReportTask)
 		})
 	}
 
-	web := router.Group("/web")
+	web := router.Group("/web/v1")
 	{
 		web.GET("/order/put/:id", api.PublishOrder)
 		web.GET("/order/check/:id", api.CheckPublishOrder)
 	}
 
-	pay := router.Group("/pay")
+	pay := router.Group("/pay/v1")
 	{
 		pay.POST("/order/create", api.CreateOrder)
 		pay.POST("/order/update", api.FinishOrder)
