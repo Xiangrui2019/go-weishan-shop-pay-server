@@ -79,6 +79,25 @@ func (service *ConfirmPayService) buildWeixinContent(data *global.OrderCache, or
 		strconv.Itoa(int(order.ID)))
 }
 
+func (service *ConfirmPayService) createPayRecord(cachedata *global.OrderCache,
+	to float64, fee float64) *models.Order {
+	tx := models.DB.Begin()
+
+	result := tx.Create(service.buildOrder(cachedata))
+	if result.Error != nil {
+		tx.Rollback()
+		panic(result.Error)
+	}
+
+	err := tx.Create(service.buildFee(cachedata, to, fee)).Error
+	if err != nil {
+		tx.Rollback()
+		panic(err)
+	}
+
+	return result.Value.(*models.Order)
+}
+
 func (service *ConfirmPayService) messageHandler(context *gin.Context, msg notify.Message) {
 	data, err := service.getOrderCache(msg)
 
@@ -86,18 +105,15 @@ func (service *ConfirmPayService) messageHandler(context *gin.Context, msg notif
 		panic(err)
 	}
 
-	order, err := models.CreateOrder(service.buildOrder(data))
+	feerate, err := strconv.ParseFloat(os.Getenv("FEE_RATE"), 64)
+
 	if err != nil {
 		panic(err)
 	}
 
-	feerate, err := strconv.ParseFloat(os.Getenv("FEE_RATE"), 64)
 	to, fee := utils.CalcFee(data.BuyPrice, feerate)
 
-	err = models.CreateFee(service.buildFee(data, to, fee))
-	if err != nil {
-		panic(err)
-	}
+	order := service.createPayRecord(data, to, fee)
 
 	utils.SendWeixinNotify(
 		"收款消息提醒",
