@@ -17,15 +17,6 @@ type Order struct {
 	Status      bool
 }
 
-func CreateOrder(order *Order) (*Order, error) {
-	res := DB.Create(order)
-	if res.Error != nil {
-		return nil, res.Error
-	}
-
-	return res.Value.(*Order), nil
-}
-
 func ListOrder() ([]Order, error) {
 	var orders []Order
 

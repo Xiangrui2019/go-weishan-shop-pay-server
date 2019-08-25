@@ -10,12 +10,3 @@ type Fee struct {
 	ToValue    float64
 	FeeValue   float64
 }
-
-func CreateFee(fee *Fee) error {
-	err := DB.Create(fee).Error
-	if err != nil {
-		return err
-	}
-
-	return err
-}
