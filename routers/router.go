@@ -19,10 +19,8 @@ func NewRouter() *gin.Engine {
 	{
 		v1.POST("/ping", api.Ping)
 
-		order := v1.Group("/order")
-		{
-			order.GET("", api.ListOrder)
-		}
+		v1.POST("/pay/create", api.CreatePay)
+		v1.POST("/pay/update", api.ConfirmPay)
 	}
 
 	task := router.Group("/tasks/v1")
@@ -36,12 +34,6 @@ func NewRouter() *gin.Engine {
 	{
 		web.GET("/order/put/:id", api.PublishOrder)
 		web.GET("/order/check/:id", api.CheckPublishOrder)
-	}
-
-	pay := router.Group("/pay/v1")
-	{
-		pay.POST("/order/create", api.CreateOrder)
-		pay.POST("/order/update", api.ConfirmOrder)
 	}
 
 	return router
