@@ -41,7 +41,7 @@ func NewRouter() *gin.Engine {
 	pay := router.Group("/pay/v1")
 	{
 		pay.POST("/order/create", api.CreateOrder)
-		pay.POST("/order/update", api.FinishOrder)
+		pay.POST("/order/update", api.ConfirmOrder)
 	}
 
 	return router

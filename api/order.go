@@ -41,8 +41,8 @@ func ListOrder(context *gin.Context) {
 	}
 }
 
-func FinishOrder(context *gin.Context) {
-	service := services.FinishOrderService{}
+func ConfirmOrder(context *gin.Context) {
+	service := services.ConfirmOrderService{}
 
 	if err := service.Finish(context); err == nil {
 		context.JSON(http.StatusOK, &serializer.Response{
