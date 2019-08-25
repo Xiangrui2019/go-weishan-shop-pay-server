@@ -11,6 +11,7 @@ type CheckPublishOrderService struct {
 
 func (service *CheckPublishOrderService) CheckPublish(context *gin.Context) string {
 	order, err := models.GetOrderById(context.Param("id"))
+
 	if err != nil {
 		return ""
 	}
