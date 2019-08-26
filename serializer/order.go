@@ -29,3 +29,11 @@ func BuildOrder(item *models.Order) *Order {
 		CreatedAt:   item.CreatedAt.Unix(),
 	}
 }
+
+func BuildOrders(items []models.Order) (orders []*Order) {
+	for _, item := range items {
+		order := BuildOrder(&item)
+		orders = append(orders, order)
+	}
+	return orders
+}
