@@ -7,6 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func ListOrder(context *gin.Context) {
+
+}
+
 func PublishOrder(context *gin.Context) {
 	service := services.PublishOrderService{}
 
