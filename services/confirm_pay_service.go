@@ -95,6 +95,11 @@ func (service *ConfirmPayService) createPayRecord(cachedata *global.OrderCache,
 		panic(err)
 	}
 
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		panic(err)
+	}
+
 	return result.Value.(*models.Order)
 }
 
