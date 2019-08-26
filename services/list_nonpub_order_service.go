@@ -19,7 +19,7 @@ func (service *ListNonPubOrderService) List() *serializer.Response {
 		service.Limit = 6
 	}
 
-	if err := models.DB.Model(models.Order{}).Where("status = ?", false).Count(&total).Error; err != nil {
+	if err := models.DB.Model(models.Order{}).Where("status = ?", 0).Count(&total).Error; err != nil {
 		return &serializer.Response{
 			Code:    http.StatusInternalServerError,
 			Message: "数据库连接错误",
@@ -27,7 +27,7 @@ func (service *ListNonPubOrderService) List() *serializer.Response {
 		}
 	}
 
-	if err := models.DB.Where("status = ?", false).Limit(service.Limit).Offset(service.Start).Find(&orders).Error; err != nil {
+	if err := models.DB.Where("status = ?", 0).Limit(service.Limit).Offset(service.Start).Find(&orders).Error; err != nil {
 		return &serializer.Response{
 			Code:    http.StatusInternalServerError,
 			Message: "数据库连接错误",
