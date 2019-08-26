@@ -20,6 +20,7 @@ func NewRouter() *gin.Engine {
 		v1.POST("/ping", api.Ping)
 
 		v1.GET("/order", api.ListOrder)
+		v1.GET("/order/non_publish", api.ListNonPubOrder)
 
 		v1.POST("/pay/create", api.CreatePay)
 		v1.POST("/pay/confirm", api.ConfirmPay)
