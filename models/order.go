@@ -17,28 +17,6 @@ type Order struct {
 	Status      bool
 }
 
-func ListOrder() ([]Order, error) {
-	var orders []Order
-
-	err := DB.Find(&orders).Error
-	if err != nil {
-		return nil, err
-	}
-
-	return orders, nil
-}
-
-func GetOrderById(id string) (*Order, error) {
-	var order Order
-
-	err := DB.First(&order, id).Error
-	if err != nil {
-		return nil, err
-	}
-
-	return &order, nil
-}
-
 func PublishOrder(id string) error {
 	var order Order
 	err := DB.First(&order, id).Error
