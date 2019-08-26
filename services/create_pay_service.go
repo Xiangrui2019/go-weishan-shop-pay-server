@@ -32,7 +32,7 @@ func (service *CreatePayService) buildOrderCache() (string, error) {
 		Phonenumber: service.Phonenumber,
 		ExtInfo:     service.ExtInfo,
 		BuyCount:    service.BuyCount,
-		BuyPrice:    service.BuyPrice,
+		BuyPrice:    float64(service.Price) * float64(service.BuyCount),
 	})
 
 	if err != nil {
