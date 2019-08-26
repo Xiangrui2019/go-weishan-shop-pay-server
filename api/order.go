@@ -21,7 +21,15 @@ func ListOrder(context *gin.Context) {
 }
 
 func ListNonPubOrder(context *gin.Context) {
+	service := services.ListNonPubOrderService{}
 
+	if err := context.ShouldBind(&service); err == nil {
+		result := service.List()
+
+		context.JSON(result.Code, result)
+	} else {
+		context.JSON(http.StatusBadRequest, utils.BuildErrorResponse(err))
+	}
 }
 
 func PublishOrder(context *gin.Context) {
