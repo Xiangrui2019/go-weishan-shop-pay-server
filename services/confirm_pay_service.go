@@ -23,12 +23,12 @@ type ConfirmPayService struct {
 func (service *ConfirmPayService) getOrderCache(msg notify.Message) (*global.OrderCache, error) {
 	data := global.OrderCache{}
 
-	value, err := cache.CacheClient.Get(msg.Attach).Result()
+	orderjson, err := cache.CacheClient.Get(msg.Attach).Result()
 	if err != nil {
 		return nil, err
 	}
 
-	err = json.Unmarshal([]byte(value), &data)
+	err = json.Unmarshal([]byte(orderjson), &data)
 	if err != nil {
 		return nil, err
 	}
@@ -47,6 +47,7 @@ func (service *ConfirmPayService) buildOrder(data *global.OrderCache) *models.Or
 		BuyCount:    data.BuyCount,
 		BuyPrice:    data.BuyPrice,
 		Status:      false,
+		SelfMention: data.SelfMention,
 	}
 }
 
@@ -59,7 +60,7 @@ func (service *ConfirmPayService) buildFee(data *global.OrderCache, to float64, 
 }
 
 func (service *ConfirmPayService) createPayRecord(cachedata *global.OrderCache,
-	to float64, fee float64) *models.Order {
+	to float64, fee float64) {
 	tx := models.DB.Begin()
 
 	result := tx.Create(service.buildOrder(cachedata))
@@ -78,8 +79,6 @@ func (service *ConfirmPayService) createPayRecord(cachedata *global.OrderCache,
 		tx.Rollback()
 		panic(err)
 	}
-
-	return result.Value.(*models.Order)
 }
 
 func (service *ConfirmPayService) messageHandler(context *gin.Context, msg notify.Message) {

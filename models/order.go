@@ -14,6 +14,7 @@ type Order struct {
 	ExtInfo     string
 	BuyCount    int
 	BuyPrice    float64
+	SelfMention bool
 	Status      bool
 }
 

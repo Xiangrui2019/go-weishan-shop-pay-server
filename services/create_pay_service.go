@@ -47,7 +47,8 @@ func (service *CreatePayService) buildOrderCache() (string, error) {
 func (service *CreatePayService) buildCashier(token string) string {
 	cashier := modules.PayJSModule.GetCashier()
 	url, err := cashier.GetRequestUrl(
-		utils.Yuan2fen(utils.CalcGoodPrice(service.Price, service.BuyCount)),
+		utils.Yuan2fen(
+			utils.CalcGoodPrice(service.Price, service.BuyCount)),
 		"微山掌上拍付款",
 		utils.RandomString(32),
 		token,
@@ -65,7 +66,7 @@ func (service *CreatePayService) buildCashier(token string) string {
 
 func (service *CreatePayService) Create() (string, *serializer.Response) {
 	token := utils.RandomString(64)
-	value, err := service.buildOrderCache()
+	orderjson, err := service.buildOrderCache()
 
 	if err != nil {
 		return "", &serializer.Response{
@@ -75,7 +76,7 @@ func (service *CreatePayService) Create() (string, *serializer.Response) {
 		}
 	}
 
-	_, err = cache.CacheClient.Set(token, value, 0).Result()
+	_, err = cache.CacheClient.Set(token, orderjson, 0).Result()
 
 	if err != nil {
 		return "", &serializer.Response{
