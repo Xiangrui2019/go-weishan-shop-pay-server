@@ -1,20 +1,17 @@
 package services
 
 import (
-	"fmt"
 	"go-weishan-shop-pay-server/cache"
 	"go-weishan-shop-pay-server/global"
 	"go-weishan-shop-pay-server/models"
 	"go-weishan-shop-pay-server/modules"
 	"go-weishan-shop-pay-server/serializer"
-	"go-weishan-shop-pay-server/templates"
 	"go-weishan-shop-pay-server/utils"
 	"net/http"
 	"os"
 	"strconv"
 
 	"encoding/json"
-	"net/url"
 
 	"github.com/gin-gonic/gin"
 	"github.com/qingwg/payjs/notify"
@@ -61,24 +58,6 @@ func (service *ConfirmPayService) buildFee(data *global.OrderCache, to float64, 
 	}
 }
 
-func (service *ConfirmPayService) buildWeixinContent(data *global.OrderCache, order *models.Order) string {
-	return fmt.Sprintf(templates.WeixinNotifySenderTemplate,
-		data.Goodname,
-		data.GoodId,
-		data.Realname,
-		data.Address,
-		data.Phonenumber,
-		data.ExtInfo,
-		data.BuyCount,
-		data.BuyPrice,
-		os.Getenv("CHECK_CALLBACK"),
-		strconv.Itoa(int(order.ID)),
-		os.Getenv("APP_MAP"),
-		url.QueryEscape(data.Address),
-		os.Getenv("FINISH_CALLBACK"),
-		strconv.Itoa(int(order.ID)))
-}
-
 func (service *ConfirmPayService) createPayRecord(cachedata *global.OrderCache,
 	to float64, fee float64) *models.Order {
 	tx := models.DB.Begin()
@@ -118,13 +97,7 @@ func (service *ConfirmPayService) messageHandler(context *gin.Context, msg notif
 
 	to, fee := utils.CalcFee(data.BuyPrice, feerate)
 
-	order := service.createPayRecord(data, to, fee)
-
-	utils.SendWeixinNotify(
-		"收款消息提醒",
-		service.buildWeixinContent(data, order),
-		"nourl",
-	)
+	service.createPayRecord(data, to, fee)
 
 	_, err = cache.CacheClient.Del(msg.Attach).Result()
 	if err != nil {
