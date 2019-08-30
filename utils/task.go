@@ -1,17 +1,41 @@
 package utils
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"go-weishan-shop-pay-server/global"
+	"go-weishan-shop-pay-server/modules"
+	"log"
+	"reflect"
+	"runtime"
 )
 
-func RunTask(context *gin.Context, job func() error) {
-	err := job()
+func RunAsyncTask(job modules.AsyncTask, data interface{}) error {
+	jobName := runtime.FuncForPC(reflect.ValueOf(job).Pointer()).Name()
+
+	err := modules.RedisMQModule.Publish(
+		global.AsyncTaskQueueKey(),
+		global.AsyncTaskData(jobName, data),
+	)
+
+	log.Println("Async Task Commit Success: ", jobName)
 
 	if err != nil {
-		context.String(http.StatusInternalServerError, err.Error())
-	} else {
-		context.String(http.StatusOK, "")
+		return err
 	}
+
+	return nil
+}
+
+func PublishTask(data *modules.Task) error {
+	err := modules.RedisMQModule.Publish(
+		global.TimeTaskQueueKey(),
+		data.Taskname,
+	)
+
+	log.Println("Timed Task Commit Success: ", data.Taskname)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
