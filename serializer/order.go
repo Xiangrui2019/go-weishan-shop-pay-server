@@ -12,6 +12,7 @@ type Order struct {
 	ExtInfo     string  `json:"ext_info"`
 	BuyCount    int     `json:"buy_count"`
 	BuyPrice    float64 `json:"buy_price"`
+	SelfMention bool    `json:"self_mention"`
 	CreatedAt   int64   `json:"created_at"`
 }
 
@@ -26,6 +27,7 @@ func BuildOrder(item *models.Order) *Order {
 		ExtInfo:     item.ExtInfo,
 		BuyCount:    item.BuyCount,
 		BuyPrice:    item.BuyPrice,
+		SelfMention: item.SelfMention,
 		CreatedAt:   item.CreatedAt.Unix(),
 	}
 }
