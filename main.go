@@ -4,20 +4,15 @@ import (
 	_ "go-weishan-shop-pay-server/conf"
 	"go-weishan-shop-pay-server/routers"
 	"log"
-	"net/http"
+	"go-weishan-shop-pay-server/protocol/http"
 	"os"
 )
 
 func main() {
 	router := routers.NewRouter()
+	server := http.NewHttpProtocol(router)
 
-	httpServer := http.Server{
-		Addr:    os.Getenv("ADDR"),
-		Handler: router,
-	}
-
-	log.Printf("Server started on %s", os.Getenv("ADDR"))
-	err := httpServer.ListenAndServe()
+	err := server.Start(os.Getenv("ADDR"))
 
 	if err != nil {
 		log.Fatal(err)
