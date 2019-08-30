@@ -9,4 +9,5 @@ type OrderCache struct {
 	ExtInfo     string  `json:"extinfo"`
 	BuyCount    int     `json:"buy_count"`
 	BuyPrice    float64 `json:"buy_price"`
+	SelfMention bool    `json:"self_mention"`
 }

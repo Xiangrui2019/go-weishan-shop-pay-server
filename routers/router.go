@@ -3,8 +3,6 @@ package routers
 import (
 	"go-weishan-shop-pay-server/api"
 	"go-weishan-shop-pay-server/middlewares"
-	"go-weishan-shop-pay-server/tasks"
-	"go-weishan-shop-pay-server/utils"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -26,17 +24,9 @@ func NewRouter() *gin.Engine {
 		v1.POST("/pay/confirm", api.ConfirmPay)
 	}
 
-	task := router.Group("/tasks/v1")
-	{
-		task.GET("/compute_report", func(context *gin.Context) {
-			utils.RunTask(context, tasks.ComputeReportTask)
-		})
-	}
-
 	web := router.Group("/web/v1")
 	{
 		web.GET("/order/publish/:id", api.PublishOrder)
-		web.GET("/order/check/:id", api.CheckPublishOrder)
 	}
 
 	return router

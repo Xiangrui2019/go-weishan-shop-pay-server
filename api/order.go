@@ -42,14 +42,3 @@ func PublishOrder(context *gin.Context) {
 		context.String(http.StatusInternalServerError, "服务器出错啦!", nil)
 	}
 }
-
-func CheckPublishOrder(context *gin.Context) {
-	service := services.CheckPublishOrderService{}
-
-	if err := service.CheckPublish(context); err != "" {
-		context.Writer.Header().Set("Content-Type", "text/html;charset=utf-8")
-		context.Writer.Write([]byte(err))
-	} else {
-		context.String(http.StatusInternalServerError, "服务器出错!")
-	}
-}

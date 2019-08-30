@@ -21,6 +21,7 @@ type CreatePayService struct {
 	BuyCount    int     `form:"buy_count" json:"buy_count" binding:"required"`
 	BuyPrice    float64 `form:"buy_price" json:"buy_price" binding:"required"`
 	Price       float64 `form:"price" json:"price" binding:"required"`
+	SelfMention bool    `form:"self_mention" json:"self_mention" binding:"required"`
 }
 
 func (service *CreatePayService) buildOrderCache() (string, error) {
@@ -33,6 +34,7 @@ func (service *CreatePayService) buildOrderCache() (string, error) {
 		ExtInfo:     service.ExtInfo,
 		BuyCount:    service.BuyCount,
 		BuyPrice:    float64(service.Price) * float64(service.BuyCount),
+		SelfMention: service.SelfMention,
 	})
 
 	if err != nil {
