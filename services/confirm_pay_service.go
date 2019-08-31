@@ -41,7 +41,7 @@ func (service *ConfirmPayService) getOrderCache(msg notify.Message) (*global.Ord
 func (service *ConfirmPayService) messageHandler(msg notify.Message) {
 	data, err := service.getOrderCache(msg)
 
-	err = utils.RunAsyncTask(tasks.ConfirmTask, data)
+	err = utils.RunAsyncTask(tasks.ConfirmTask, *data)
 
 	if err != nil {
 		panic(err)
