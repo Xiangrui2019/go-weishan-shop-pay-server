@@ -2,18 +2,21 @@ package utils
 
 import (
 	"go-weishan-shop-pay-server/global"
+	"go-weishan-shop-pay-server/models"
 	"go-weishan-shop-pay-server/modules"
 	"log"
 	"reflect"
 	"runtime"
 )
 
-func RunAsyncTask(job modules.AsyncTask, data interface{}) error {
+func RunAsyncTask(job modules.AsyncTask, data string) error {
 	jobName := runtime.FuncForPC(reflect.ValueOf(job).Pointer()).Name()
 
 	err := modules.RedisMQModule.Publish(
 		global.AsyncTaskQueueKey(),
-		global.AsyncTaskData(jobName, data),
+		global.AsyncTaskData(jobName, &models.TaskData{
+			Data: data,
+		}),
 	)
 
 	log.Println("Async Task Commit Success: ", jobName)

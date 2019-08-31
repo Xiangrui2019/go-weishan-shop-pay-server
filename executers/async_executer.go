@@ -1,10 +1,11 @@
 package executers
 
 import (
-	"go-weishan-shop-pay-server/global"
-	"go-weishan-shop-pay-server/modules"
 	"encoding/json"
 	"errors"
+	"go-weishan-shop-pay-server/global"
+	"go-weishan-shop-pay-server/models"
+	"go-weishan-shop-pay-server/modules"
 	"log"
 	"strings"
 	"time"
@@ -21,7 +22,7 @@ func executeAsyncTask(message string) error {
 	for _, item := range modules.TasksModule {
 		l := strings.Split(message, "#$#")
 		if item.Taskname == l[0] {
-			var data interface{}
+			var data models.TaskData
 
 			if item.Type != modules.AsyncJob {
 				return errors.New("Job type error.")

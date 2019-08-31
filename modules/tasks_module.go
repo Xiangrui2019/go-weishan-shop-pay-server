@@ -1,6 +1,7 @@
 package modules
 
 import (
+	"go-weishan-shop-pay-server/models"
 	"reflect"
 	"runtime"
 )
@@ -18,7 +19,7 @@ type Task struct {
 }
 
 type TimeTask func() error
-type AsyncTask func(data interface{}) error
+type AsyncTask func(data models.TaskData) error
 
 var TasksModule []*Task
 

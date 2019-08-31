@@ -1,6 +1,7 @@
 package tasks
 
 import (
+	"encoding/json"
 	"go-weishan-shop-pay-server/global"
 	"go-weishan-shop-pay-server/models"
 	"go-weishan-shop-pay-server/utils"
@@ -55,8 +56,12 @@ func createPayRecord(cachedata *global.OrderCache,
 	return nil
 }
 
-func ConfirmTask(data interface{}) error {
-	d := data.(global.OrderCache)
+func ConfirmTask(data models.TaskData) error {
+	var d global.OrderCache
+
+	if err := json.Unmarshal([]byte(data.Data), &d); err != nil {
+		return err
+	}
 
 	feerate, err := strconv.ParseFloat(os.Getenv("FEE_RATE"), 64)
 
