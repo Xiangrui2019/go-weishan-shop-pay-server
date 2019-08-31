@@ -22,11 +22,8 @@ func NewRouter() *gin.Engine {
 
 		v1.POST("/pay/create", api.CreatePay)
 		v1.POST("/pay/confirm", api.ConfirmPay)
-	}
 
-	web := router.Group("/web/v1")
-	{
-		web.GET("/order/publish/:id", api.PublishOrder)
+		v1.PATCH("/order/publish/:id", api.PublishOrder)
 	}
 
 	return router
