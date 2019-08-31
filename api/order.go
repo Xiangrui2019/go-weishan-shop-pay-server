@@ -35,10 +35,6 @@ func ListNonPubOrder(context *gin.Context) {
 func PublishOrder(context *gin.Context) {
 	service := services.PublishOrderService{}
 
-	if err := service.Publish(context); err != "" {
-		context.Writer.Header().Set("Content-Type", "text/html;charset=utf-8")
-		context.Writer.Write([]byte(err))
-	} else {
-		context.String(http.StatusInternalServerError, "服务器出错啦!", nil)
-	}
+	res := service.Publish(context)
+	context.JSON(res.Code, res)
 }
