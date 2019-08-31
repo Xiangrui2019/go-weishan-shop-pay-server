@@ -56,7 +56,7 @@ func createPayRecord(cachedata *global.OrderCache,
 }
 
 func ConfirmTask(data interface{}) error {
-	d := data.(*global.OrderCache)
+	d := data.(global.OrderCache)
 
 	feerate, err := strconv.ParseFloat(os.Getenv("FEE_RATE"), 64)
 
@@ -66,7 +66,7 @@ func ConfirmTask(data interface{}) error {
 
 	to, fee := utils.CalcFee(d.BuyPrice, feerate)
 
-	createPayRecord(d, to, fee)
+	createPayRecord(&d, to, fee)
 
 	return nil
 }
