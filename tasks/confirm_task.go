@@ -42,12 +42,6 @@ func createPayRecord(cachedata *global.OrderCache,
 		return result.Error
 	}
 
-	err := tx.Create(buildFee(cachedata, to, fee)).Error
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-
 	if err := tx.Commit().Error; err != nil {
 		tx.Rollback()
 		return err
